@@ -1,0 +1,51 @@
+---
+- hosts: localhost
+  connection: local
+  user: vagrant
+  become: yes
+  vars:
+    ruby_version: "2.2.4"
+    vagrant_home: "/home/vagrant"
+  tasks:
+    - name: packages install
+      apt: name={{ item }} update_cache=yes
+      with_items:
+        - git
+        - libreadline-dev
+        - libssl-dev
+        - zlib1g-dev
+        - build-essential
+        - nodejs
+        - npm
+        - sqlite3
+        - libsqlite3-dev
+        - libxml2-dev
+
+    - stat: path=/usr/bin/node
+      register: f
+    - name: glant access nodejs => node
+      shell: "update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10"
+      when: not f.stat.exists
+
+    - name: install rbenv
+      become: no
+      git: repo=https://github.com/sstephenson/rbenv.git dest={{ vagrant_home }}/.rbenv version=master
+
+    - name: add rbenv path to bash_profile
+      copy: src=files/rbenv.sh dest=/etc/profile.d/rbenv.sh
+
+    - name: install ruby_build
+      become: no
+      git: repo=https://github.com/sstephenson/ruby-build.git dest={{ vagrant_home }}/.rbenv/plugins/ruby-build version=master
+
+    - name: install ruby
+      become: no
+      shell: "export RBENV_ROOT={{ vagrant_home }}/.rbenv; export PATH=$RBENV_ROOT/bin:$PATH; export RUBY_CONFIGURE_OPTS=--disable-install-doc; rbenv install {{ ruby_version }}; rbenv global {{ ruby_version }}"
+      args:
+        creates: "{{ vagrant_home }}/.rbenv/versions/{{ ruby_version }}/"
+
+    - name: install bundler
+      become: no
+      shell: "{{ vagrant_home }}/.rbenv/shims/gem install bundler"
+      args:
+        creates: "{{ vagrant_home }}/.rbenv/shims/bundle"
