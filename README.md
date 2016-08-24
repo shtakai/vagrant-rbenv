@@ -30,6 +30,7 @@ Pass: vagrant
 ホストOSがwindowsの場合、railsのプロジェクトが共有フォルダ内にあるとそのままでは `bundle install` でファイルが書き込めなくてエラーとなるので、以下のようにインストール先を共有フォルダの外にします。
 
 ```
+$ mkdir -p /home/vagrant/proj-name/vendor/bundle
 $ bundle install --path /home/vagrant/proj-name/vendor/bundle --without production
 ```
 
