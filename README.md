@@ -27,10 +27,27 @@ Pass: vagrant
 でログインできます。  
 共有フォルダとしてホストOSの `vagrant-rbenv` フォルダがゲストOSの `/vagrant` でアクセスできるので開発するリポジトリのファイルを置けばホストOSからファイルの変更が可能です。
 
+ゲストOSから共有フォルダ内にrailsのプロジェクトをcloneする場合のコマンド例
+```
+$ cd /vagrant
+$ git clone リポジトリのURL
+```
+
+git clone が
+```
+fatal: could not create work tree dir 'proj-name'.: Permission denied
+```
+のようなエラーになる場合は `/vagrant` フォルダにvagrantユーザーで書き込み出来るパーミッションがあるか確認してください。
+`/vagrant` フォルダ(中のファイル含む)の所有者をvagrantユーザーにするコマンド例
+```
+$ sudo chown -R vagrant /vagrant
+```
+
 ホストOSがwindowsの場合、railsのプロジェクトが共有フォルダ内にあるとそのままでは `bundle install` でファイルが書き込めなくてエラーとなるので、以下のようにインストール先を共有フォルダの外にします。
 
 ```
 $ mkdir -p /home/vagrant/proj-name/vendor/bundle
+$ cd /vagrant/proj-name
 $ bundle install --path /home/vagrant/proj-name/vendor/bundle --without production
 ```
 
