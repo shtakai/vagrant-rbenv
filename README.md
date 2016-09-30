@@ -11,7 +11,7 @@ windows環境でgitの改行コードの自動変換が有効になっている�
 
 ## 使い方
 [VirtualBox](https://www.virtualbox.org/)をインストールします。  
-[Vagrant](https://www.vagrantup.com/)をインストールします。
+[Vagrant](https://www.vagrantup.com/)をインストールします。  
 vagrant-vbguestプラグインをインストールします。
 ```
 $ vagrant plugin install vagrant-vbguest
