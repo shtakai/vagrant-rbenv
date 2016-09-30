@@ -1,11 +1,23 @@
 # Ubuntu + rbenvによるrubyローカル開発環境
 VirtualBox + Vagrant + Ansible(ansible_local)で仮想環境を構築します。  
+
+## 注意
 64ビットOSを選択しているので、BIOSの設定で `Virtualization Technology` が `Enable` になっている必要があります。
+
+windows環境でgitの改行コードの自動変換が有効になっているとprovisionに含まれるスクリプトが動かないので無効に設定する必要があります。
+```
+> git config --global core.autoCRLF false
+```
 
 ## 使い方
 [VirtualBox](https://www.virtualbox.org/)をインストールします。  
 [Vagrant](https://www.vagrantup.com/)をインストールします。
+vagrant-vbguestプラグインをインストールします。
+```
+$ vagrant plugin install vagrant-vbguest
+```
 
+このリポジトリをクローンしてリポジトリのフォルダ上で vagrant up します。
 ```
 $ git clone https://github.com/ezaki3/vagrant-rbenv.git
 $ cd vagrant-rbenv
@@ -31,16 +43,6 @@ Pass: vagrant
 ```
 $ cd /vagrant
 $ git clone リポジトリのURL
-```
-
-git clone が
-```
-fatal: could not create work tree dir 'proj-name'.: Permission denied
-```
-のようなエラーになる場合は `/vagrant` フォルダにvagrantユーザーで書き込み出来るパーミッションがあるか確認してください。
-`/vagrant` フォルダ(中のファイル含む)の所有者をvagrantユーザーにするコマンド例
-```
-$ sudo chown -R vagrant /vagrant
 ```
 
 ホストOSがwindowsの場合、railsのプロジェクトが共有フォルダ内にあるとそのままでは `bundle install` でファイルが書き込めなくてエラーとなるので、以下のようにインストール先を共有フォルダの外にします。
