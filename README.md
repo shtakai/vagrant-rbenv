@@ -68,3 +68,9 @@ $ vagrant halt
 ```
 $ vagrant up
 ```
+リポジトリに変更があった場合に変更内容を反映させる
+```
+$ git pull
+$ vagrant up # すでに開始されている場合は不要
+$ vagrant provision
+```
