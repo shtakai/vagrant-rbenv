@@ -6,6 +6,9 @@
   vars:
     ruby_version: "2.2.4"
     vagrant_home: "/home/vagrant"
+    dbuser: "devuser"
+    dbpass: "devpass"
+    dbname: "devdb"
   tasks:
     - name: packages install
       apt: name={{ item }} update_cache=yes
@@ -21,6 +24,8 @@
         - libsqlite3-dev
         - libxml2-dev
         - imagemagick
+        - postgresql
+        - python-psycopg2
 
     - stat: path=/usr/bin/node
       register: f
@@ -50,3 +55,34 @@
       shell: "{{ vagrant_home }}/.rbenv/shims/gem install bundler"
       args:
         creates: "{{ vagrant_home }}/.rbenv/shims/bundle"
+
+    - name: start postgresql
+      service: name=postgresql state=started  enabled=yes
+
+    - name: postgres user sudores
+      lineinfile:
+        dest: /etc/sudoers.d/postgres
+        owner: root
+        group: root
+        mode: 0440
+        line: "%vagrant ALL=(postgres) NOPASSWD: ALL"
+        state: present
+        create: yes
+        validate: "visudo -cf %s"
+
+    - name : create database
+      postgresql_db:
+        name: "{{ dbname }}"
+        encoding: "UTF-8"
+        login_user: postgres
+      become_user: postgres
+
+    - name: create user
+      postgresql_user:
+        db: "{{ dbname }}"
+        name: "{{ dbuser }}"
+        password: "{{ dbpass }}"
+        priv: ALL
+        state: present
+        login_user: postgres
+      become_user: postgres
