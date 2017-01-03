@@ -9,6 +9,9 @@
     dbuser: "devuser"
     dbpass: "devpass"
     dbname: "devdb"
+    dbuser_test: "testuser"
+    dbpass_test: "testpass"
+    dbname_test: "testdb"
   tasks:
     - name: packages install
       apt: name={{ item }} update_cache=yes
@@ -25,6 +28,7 @@
         - libxml2-dev
         - imagemagick
         - postgresql
+        - libpq-dev
         - python-psycopg2
 
     - stat: path=/usr/bin/node
@@ -70,18 +74,35 @@
         create: yes
         validate: "visudo -cf %s"
 
-    - name : create database
+    - name : create database for develop
       postgresql_db:
         name: "{{ dbname }}"
         encoding: "UTF-8"
         login_user: postgres
       become_user: postgres
 
-    - name: create user
+    - name: create user for develop
       postgresql_user:
         db: "{{ dbname }}"
         name: "{{ dbuser }}"
         password: "{{ dbpass }}"
+        priv: ALL
+        state: present
+        login_user: postgres
+      become_user: postgres
+
+    - name : create database for test
+      postgresql_db:
+        name: "{{ dbname_test }}"
+        encoding: "UTF-8"
+        login_user: postgres
+      become_user: postgres
+
+    - name: create user for test
+      postgresql_user:
+        db: "{{ dbname_test }}"
+        name: "{{ dbuser_test }}"
+        password: "{{ dbpass_test }}"
         priv: ALL
         state: present
         login_user: postgres
