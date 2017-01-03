@@ -91,21 +91,19 @@
         login_user: postgres
       become_user: postgres
 
+    - name: create user for test
+      postgresql_user:
+        name: "{{ dbuser_test }}"
+        password: "{{ dbpass_test }}"
+        state: present
+        login_user: postgres
+        role_attr_flags: CREATEDB
+      become_user: postgres
+
     - name : create database for test
       postgresql_db:
         name: "{{ dbname_test }}"
         encoding: "UTF-8"
         login_user: postgres
         owner: "{{ dbuser_test }}"
-      become_user: postgres
-
-    - name: create user for test
-      postgresql_user:
-        db: "{{ dbname_test }}"
-        name: "{{ dbuser_test }}"
-        password: "{{ dbpass_test }}"
-        priv: ALL
-        state: present
-        login_user: postgres
-        role_attr_flags: CREATEDB
       become_user: postgres
