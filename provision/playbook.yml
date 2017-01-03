@@ -96,6 +96,7 @@
         name: "{{ dbname_test }}"
         encoding: "UTF-8"
         login_user: postgres
+        owner: "{{ dbuser_test }}"
       become_user: postgres
 
     - name: create user for test
@@ -106,4 +107,5 @@
         priv: ALL
         state: present
         login_user: postgres
+        role_attr_flags: CREATEDB
       become_user: postgres
