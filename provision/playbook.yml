@@ -7,6 +7,10 @@
     ruby_version: "2.2.4"
     vagrant_home: "/home/vagrant"
   tasks:
+    - name: set timezone to Asia/Tokyo
+      timezone:
+        name: Asia/Tokyo
+
     - name: packages install
       apt: name={{ item }} update_cache=yes
       with_items:
