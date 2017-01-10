@@ -76,5 +76,6 @@ Vagrant.configure("2") do |config|
     ansible.inventory_path = "provision/hosts"
     ansible.limit = "all"
     ansible.verbose = true
+    ansible.version = "latest"
   end
 end
