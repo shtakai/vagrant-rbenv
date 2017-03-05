@@ -34,6 +34,7 @@
         - postgresql
         - libpq-dev
         - python-psycopg2
+        - graphviz
 
     - stat: path=/usr/bin/node
       register: f
