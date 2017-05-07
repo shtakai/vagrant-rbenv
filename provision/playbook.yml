@@ -80,6 +80,8 @@
         validate: "visudo -cf %s"
 
     - name : create database for develop
+      vars:
+        ansible_ssh_pipelining: true
       postgresql_db:
         name: "{{ dbname }}"
         encoding: "UTF-8"
@@ -87,6 +89,8 @@
       become_user: postgres
 
     - name: create user for develop
+      vars:
+        ansible_ssh_pipelining: true
       postgresql_user:
         db: "{{ dbname }}"
         name: "{{ dbuser }}"
@@ -97,6 +101,8 @@
       become_user: postgres
 
     - name: create user for test
+      vars:
+        ansible_ssh_pipelining: true
       postgresql_user:
         name: "{{ dbuser_test }}"
         password: "{{ dbpass_test }}"
@@ -106,6 +112,8 @@
       become_user: postgres
 
     - name : create database for test
+      vars:
+        ansible_ssh_pipelining: true
       postgresql_db:
         name: "{{ dbname_test }}"
         encoding: "UTF-8"
