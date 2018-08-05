@@ -1,4 +1,7 @@
 # Ubuntu + rbenvによるrubyローカル開発環境
+
+[![GuardRails badge](https://badges.production.guardrails.io/shtakai/vagrant-rbenv.svg)](https://www.guardrails.io)
+
 VirtualBox + Vagrant + Ansible(ansible_local)で仮想環境を構築します。  
 
 ## 注意
